@@ -49,3 +49,13 @@ export type User = Prisma.UserModel
  * 
  */
 export type Package = Prisma.PackageModel
+/**
+ * Model Folder
+ * 
+ */
+export type Folder = Prisma.FolderModel
+/**
+ * Model File
+ * 
+ */
+export type File = Prisma.FileModel

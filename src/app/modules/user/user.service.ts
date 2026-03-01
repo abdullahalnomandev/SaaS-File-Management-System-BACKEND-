@@ -74,79 +74,68 @@ const createUserToDB = async (payload: Partial<IUser>) => {
     name: createdUser.name || '',
   };
   const verifyAccount = emailTemplate.verifyAccount(emailData);
-  emailHelper.sendEmail(verifyAccount).catch((err) => {
+  emailHelper.sendEmail(verifyAccount).catch(err => {
     console.error('Failed to send verification email:', err);
   });
 
   return {
     message: 'User created successfully',
-    user: { id: createdUser.id, email: createdUser.email, name: createdUser.name },
+    user: {
+      id: createdUser.id,
+      email: createdUser.email,
+      name: createdUser.name,
+    },
   };
 };
-const getUserProfileFromDB = async (
-  user: JwtPayload
-): Promise<Partial<IUser>> => {
+
+const getUserProfileFromDB = async (user: JwtPayload) => {
   const { id } = user;
   const isExistUser = await db.user.findUnique({
     where: { id: Number(id) },
+    include:{
+      package:true,
+    }
   });
-  if (!isExistUser) {
-    throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
-  }
 
-  return {
-    id: isExistUser.id,
-    email: isExistUser.email,
-    name: isExistUser.name ?? undefined,
-    role: isExistUser.role,
-    image: isExistUser.image ?? undefined,
-    status: isExistUser.status,
-    verified: isExistUser.verified,
-    createdAt: isExistUser.createdAt,
-    updatedAt: isExistUser.updatedAt,
-  };
+  if (!isExistUser)
+    throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
+
+  // Dynamically remove password
+  const { password, onetime_code, expires_at, ...userData } = isExistUser;
+
+  return userData;
 };
 
-const updateProfileToDB = async (
-  user: JwtPayload,
-  payload: Partial<IUser>
-): Promise<Partial<IUser | null>> => {
-  const { id } = user;
-  const numericId = Number(id);
+const updateProfileToDB = async (user: JwtPayload, payload: Partial<IUser>) => {
+  payload.package_id = Number(payload.package_id);
 
   // Find current user
   const isExistUser = await db.user.findUnique({
-    where: { id: numericId },
+    where: { id: user.id },
   });
   if (!isExistUser) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "User doesn't exist!");
   }
 
   // Unlink previous image if new image provided
-  if (payload.image && isExistUser.image) {
-    unlinkFile(isExistUser.image);
+  if (payload.profile_image && isExistUser.profile_image) {
+    unlinkFile(isExistUser.profile_image);
   }
 
-  // Remove fields that shouldn't be updated directly (e.g. id, email, etc.)
-  const updatePayload: any = { ...payload };
-  delete updatePayload.id;
-
-  const updatedUser = await db.user.update({
-    where: { id: numericId },
-    data: updatePayload,
+  const isPackageExist = await db.package.findUnique({
+    where: { id: payload.package_id ?? undefined },
   });
 
-  return {
-    id: updatedUser.id,
-    email: updatedUser.email,
-    name: updatedUser.name ?? undefined,
-    role: updatedUser.role,
-    image: updatedUser.image ?? undefined,
-    status: updatedUser.status,
-    verified: updatedUser.verified,
-    createdAt: updatedUser.createdAt,
-    updatedAt: updatedUser.updatedAt,
-  };
+  if (!isPackageExist) {
+    throw new ApiError(StatusCodes.BAD_REQUEST, "Package doesn't exist!");
+  }
+
+  const updatedUser = await db.user.update({
+    where: { id: user.id },
+    data: payload,
+  });
+
+  return updatedUser;
 };
 
 // Pagination - get all users
@@ -163,7 +152,7 @@ const getAllUsersFromDB = async (
     db.user.findMany({
       skip,
       take: limit,
-      orderBy: { createdAt: 'desc' },
+      orderBy: { created_at: 'desc' },
     }),
     db.user.count(),
   ]);
@@ -173,11 +162,11 @@ const getAllUsersFromDB = async (
     email: user.email,
     name: user.name ?? undefined,
     role: user.role,
-    image: user.image ?? undefined,
+    profile_image: user.profile_image ?? undefined,
     status: user.status,
     verified: user.verified,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    createdAt: user.created_at,
+    updatedAt: user.updated_at,
   }));
 
   return {

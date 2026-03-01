@@ -23,6 +23,8 @@ model User {
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  folders    Folder[]
+  files      File[]
 }
 
 model Package {
@@ -37,6 +39,32 @@ model Package {
   created_at            DateTime @default(now())
   updated_at            DateTime @updatedAt
   users                 User[]
+}
+
+model Folder {
+  id               Int    @id @default(autoincrement())
+  name             String
+  user_id          Int
+  parent_folder_id Int?
+  user             User   @relation(fields: [user_id], references: [id])
+
+  parent  Folder?  @relation("FolderToFolders", fields: [parent_folder_id], references: [id])
+  folders Folder[] @relation("FolderToFolders")
+
+  nesting_level Int    @default(0)
+  total_files   Int    @default(0)
+  files         File[]
+}
+
+model File {
+  id        Int    @id @default(autoincrement())
+  folder_id Int
+  folder    Folder @relation(fields: [folder_id], references: [id])
+  user_id   Int
+  user      User   @relation(fields: [user_id], references: [id])
+  path_name String
+  file_type String
+  size      Int
 }
 
 enum USER_ROLE {

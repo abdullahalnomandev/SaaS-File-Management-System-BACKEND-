@@ -1,9 +1,9 @@
 import { StatusCodes } from "http-status-codes";
 import ApiError from "../../../errors/ApiError";
 import db from "../../../shared/prisma";
-import { IPackage, ICreatePackage, IUpdatePackage } from "./package.interface";
+import { IPackage } from "./package.interface";
 
-const createPackageToDB = async (payload: ICreatePackage): Promise<IPackage> => {
+const createPackageToDB = async (payload: IPackage): Promise<IPackage> => {
   if (!payload.name) {
     throw new ApiError(StatusCodes.BAD_REQUEST, "Name is required");
   }
@@ -17,7 +17,7 @@ const createPackageToDB = async (payload: ICreatePackage): Promise<IPackage> => 
 
 const updatePackageToDB = async (
   packageId: number,
-  payload: IUpdatePackage
+  payload: IPackage
 ): Promise<IPackage> => {
   
   console.log('id', packageId)

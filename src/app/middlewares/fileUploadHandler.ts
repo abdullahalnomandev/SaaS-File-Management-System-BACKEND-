@@ -5,7 +5,7 @@ import multer, { FileFilterCallback } from 'multer';
 import path from 'path';
 import ApiError from '../../errors/ApiError';
 
-const fileUploadHandler = () => {
+const fileUploadHandler = (fields?: { name: string; maxCount: number }[]) => {
   //create upload folder
   const baseUploadDir = path.join(process.cwd(), 'uploads');
   if (!fs.existsSync(baseUploadDir)) {
@@ -26,6 +26,12 @@ const fileUploadHandler = () => {
       switch (file.fieldname) {
         case 'image':
           uploadDir = path.join(baseUploadDir, 'image');
+          break;
+        case 'profile_image':
+          uploadDir = path.join(baseUploadDir, 'profile_image');
+          break;
+        case 'logo':
+          uploadDir = path.join(baseUploadDir, 'logo');
           break;
         case 'media':
           uploadDir = path.join(baseUploadDir, 'media');
@@ -54,19 +60,22 @@ const fileUploadHandler = () => {
   });
 
   //file filter
-  const filterFilter = (req: Request, file: any, cb: FileFilterCallback) => {
-    if (file.fieldname === 'image') {
+  const filterFilter = (req: any, file: any, cb: FileFilterCallback) => {
+    if (file.fieldname === 'image' || file.fieldname === 'profile_image' || file.fieldname === 'logo') {
       if (
         file.mimetype === 'image/jpeg' ||
         file.mimetype === 'image/png' ||
-        file.mimetype === 'image/jpg'
+        file.mimetype === 'image/jpg' ||
+        file.mimetype === 'image/webp' ||
+        file.mimetype === 'image/gif' ||
+        file.mimetype === 'image/bmp'
       ) {
         cb(null, true);
       } else {
         cb(
           new ApiError(
             StatusCodes.BAD_REQUEST,
-            'Only .jpeg, .png, .jpg file supported'
+            'Only .jpeg, .png, .jpg , .webp, .gif, .bmp file supported'
           )
         );
       }
@@ -94,13 +103,15 @@ const fileUploadHandler = () => {
 
   const upload = multer({
     storage: storage,
-    fileFilter: filterFilter,
-  }).fields([
-    { name: 'image', maxCount: 3 },
-    { name: 'media', maxCount: 3 },
-    { name: 'doc', maxCount: 3 },
+    fileFilter: filterFilter ,
+  }).fields(fields || [
+    { name: 'profile_image', maxCount: 1 },
+    { name: 'image', maxCount: 10 },
+    { name: 'logo', maxCount: 5 },
+    { name: 'media', maxCount: 5 },
+    { name: 'doc', maxCount: 5 },
   ]);
-  return upload;
+  return upload as any;
 };
 
 export default fileUploadHandler;

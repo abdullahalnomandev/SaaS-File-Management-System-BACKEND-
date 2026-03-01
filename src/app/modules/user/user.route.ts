@@ -12,12 +12,7 @@ router
   .patch(
     auth(USER_ROLES.SUPER_ADMIN, USER_ROLES.ADMIN, USER_ROLES.USER),
     fileUploadHandler(),
-    (req: Request, res: Response, next: NextFunction) => {
-      if (req.body.data) {
-        req.body = JSON.parse(req.body.data);
-      }
-      return UserController.updateProfile(req, res, next);
-    }
+    UserController.updateProfile
   );
 
 // Route for getting all users

@@ -52,7 +52,9 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  Package: 'Package'
+  Package: 'Package',
+  Folder: 'Folder',
+  File: 'File'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -104,6 +106,30 @@ export const PackageScalarFieldEnum = {
 } as const
 
 export type PackageScalarFieldEnum = (typeof PackageScalarFieldEnum)[keyof typeof PackageScalarFieldEnum]
+
+
+export const FolderScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  user_id: 'user_id',
+  parent_folder_id: 'parent_folder_id',
+  nesting_level: 'nesting_level',
+  total_files: 'total_files'
+} as const
+
+export type FolderScalarFieldEnum = (typeof FolderScalarFieldEnum)[keyof typeof FolderScalarFieldEnum]
+
+
+export const FileScalarFieldEnum = {
+  id: 'id',
+  folder_id: 'folder_id',
+  user_id: 'user_id',
+  path_name: 'path_name',
+  file_type: 'file_type',
+  size: 'size'
+} as const
+
+export type FileScalarFieldEnum = (typeof FileScalarFieldEnum)[keyof typeof FileScalarFieldEnum]
 
 
 export const SortOrder = {

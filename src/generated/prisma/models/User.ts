@@ -285,6 +285,8 @@ export type UserWhereInput = {
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
   package?: Prisma.XOR<Prisma.PackageNullableScalarRelationFilter, Prisma.PackageWhereInput> | null
+  folders?: Prisma.FolderListRelationFilter
+  files?: Prisma.FileListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -302,6 +304,8 @@ export type UserOrderByWithRelationInput = {
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   package?: Prisma.PackageOrderByWithRelationInput
+  folders?: Prisma.FolderOrderByRelationAggregateInput
+  files?: Prisma.FileOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -322,6 +326,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   created_at?: Prisma.DateTimeFilter<"User"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
   package?: Prisma.XOR<Prisma.PackageNullableScalarRelationFilter, Prisma.PackageWhereInput> | null
+  folders?: Prisma.FolderListRelationFilter
+  files?: Prisma.FileListRelationFilter
 }, "id" | "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -377,6 +383,8 @@ export type UserCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   package?: Prisma.PackageCreateNestedOneWithoutUsersInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  files?: Prisma.FileCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -393,6 +401,8 @@ export type UserUncheckedCreateInput = {
   expires_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -408,6 +418,8 @@ export type UserUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   package?: Prisma.PackageUpdateOneWithoutUsersNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  files?: Prisma.FileUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -424,6 +436,8 @@ export type UserUncheckedUpdateInput = {
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  files?: Prisma.FileUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -540,6 +554,11 @@ export type UserOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
+export type UserScalarRelationFilter = {
+  is?: Prisma.UserWhereInput
+  isNot?: Prisma.UserWhereInput
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -626,6 +645,34 @@ export type UserUncheckedUpdateManyWithoutPackageNestedInput = {
   deleteMany?: Prisma.UserScalarWhereInput | Prisma.UserScalarWhereInput[]
 }
 
+export type UserCreateNestedOneWithoutFoldersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFoldersInput, Prisma.UserUncheckedCreateWithoutFoldersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFoldersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFoldersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFoldersInput, Prisma.UserUncheckedCreateWithoutFoldersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFoldersInput
+  upsert?: Prisma.UserUpsertWithoutFoldersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFoldersInput, Prisma.UserUpdateWithoutFoldersInput>, Prisma.UserUncheckedUpdateWithoutFoldersInput>
+}
+
+export type UserCreateNestedOneWithoutFilesInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFilesInput, Prisma.UserUncheckedCreateWithoutFilesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFilesInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFilesNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFilesInput, Prisma.UserUncheckedCreateWithoutFilesInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFilesInput
+  upsert?: Prisma.UserUpsertWithoutFilesInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFilesInput, Prisma.UserUpdateWithoutFilesInput>, Prisma.UserUncheckedUpdateWithoutFilesInput>
+}
+
 export type UserCreateWithoutPackageInput = {
   email: string
   name?: string | null
@@ -638,6 +685,8 @@ export type UserCreateWithoutPackageInput = {
   expires_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+  files?: Prisma.FileCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutPackageInput = {
@@ -653,6 +702,8 @@ export type UserUncheckedCreateWithoutPackageInput = {
   expires_at?: Date | string | null
   created_at?: Date | string
   updated_at?: Date | string
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutPackageInput = {
@@ -700,6 +751,170 @@ export type UserScalarWhereInput = {
   updated_at?: Prisma.DateTimeFilter<"User"> | Date | string
 }
 
+export type UserCreateWithoutFoldersInput = {
+  email: string
+  name?: string | null
+  password: string
+  role?: $Enums.USER_ROLE
+  profile_image?: string | null
+  status?: $Enums.USER_STATUS
+  verified?: boolean
+  onetime_code?: string | null
+  expires_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  package?: Prisma.PackageCreateNestedOneWithoutUsersInput
+  files?: Prisma.FileCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFoldersInput = {
+  id?: number
+  email: string
+  name?: string | null
+  password: string
+  role?: $Enums.USER_ROLE
+  profile_image?: string | null
+  status?: $Enums.USER_STATUS
+  verified?: boolean
+  package_id?: number | null
+  onetime_code?: string | null
+  expires_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  files?: Prisma.FileUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFoldersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFoldersInput, Prisma.UserUncheckedCreateWithoutFoldersInput>
+}
+
+export type UserUpsertWithoutFoldersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFoldersInput, Prisma.UserUncheckedUpdateWithoutFoldersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFoldersInput, Prisma.UserUncheckedCreateWithoutFoldersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFoldersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFoldersInput, Prisma.UserUncheckedUpdateWithoutFoldersInput>
+}
+
+export type UserUpdateWithoutFoldersInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  profile_image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUSER_STATUSFieldUpdateOperationsInput | $Enums.USER_STATUS
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onetime_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  package?: Prisma.PackageUpdateOneWithoutUsersNestedInput
+  files?: Prisma.FileUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFoldersInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  profile_image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUSER_STATUSFieldUpdateOperationsInput | $Enums.USER_STATUS
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  package_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  onetime_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  files?: Prisma.FileUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutFilesInput = {
+  email: string
+  name?: string | null
+  password: string
+  role?: $Enums.USER_ROLE
+  profile_image?: string | null
+  status?: $Enums.USER_STATUS
+  verified?: boolean
+  onetime_code?: string | null
+  expires_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  package?: Prisma.PackageCreateNestedOneWithoutUsersInput
+  folders?: Prisma.FolderCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutFilesInput = {
+  id?: number
+  email: string
+  name?: string | null
+  password: string
+  role?: $Enums.USER_ROLE
+  profile_image?: string | null
+  status?: $Enums.USER_STATUS
+  verified?: boolean
+  package_id?: number | null
+  onetime_code?: string | null
+  expires_at?: Date | string | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  folders?: Prisma.FolderUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutFilesInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFilesInput, Prisma.UserUncheckedCreateWithoutFilesInput>
+}
+
+export type UserUpsertWithoutFilesInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFilesInput, Prisma.UserUncheckedUpdateWithoutFilesInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFilesInput, Prisma.UserUncheckedCreateWithoutFilesInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFilesInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFilesInput, Prisma.UserUncheckedUpdateWithoutFilesInput>
+}
+
+export type UserUpdateWithoutFilesInput = {
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  profile_image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUSER_STATUSFieldUpdateOperationsInput | $Enums.USER_STATUS
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  onetime_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  package?: Prisma.PackageUpdateOneWithoutUsersNestedInput
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFilesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumUSER_ROLEFieldUpdateOperationsInput | $Enums.USER_ROLE
+  profile_image?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumUSER_STATUSFieldUpdateOperationsInput | $Enums.USER_STATUS
+  verified?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  package_id?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  onetime_code?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+}
+
 export type UserCreateManyPackageInput = {
   id?: number
   email: string
@@ -727,6 +942,8 @@ export type UserUpdateWithoutPackageInput = {
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folders?: Prisma.FolderUpdateManyWithoutUserNestedInput
+  files?: Prisma.FileUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutPackageInput = {
@@ -742,6 +959,8 @@ export type UserUncheckedUpdateWithoutPackageInput = {
   expires_at?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  folders?: Prisma.FolderUncheckedUpdateManyWithoutUserNestedInput
+  files?: Prisma.FileUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateManyWithoutPackageInput = {
@@ -760,6 +979,44 @@ export type UserUncheckedUpdateManyWithoutPackageInput = {
 }
 
 
+/**
+ * Count Type UserCountOutputType
+ */
+
+export type UserCountOutputType = {
+  folders: number
+  files: number
+}
+
+export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  folders?: boolean | UserCountOutputTypeCountFoldersArgs
+  files?: boolean | UserCountOutputTypeCountFilesArgs
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the UserCountOutputType
+   */
+  select?: Prisma.UserCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFoldersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FolderWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFilesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FileWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -776,6 +1033,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   created_at?: boolean
   updated_at?: boolean
   package?: boolean | Prisma.User$packageArgs<ExtArgs>
+  folders?: boolean | Prisma.User$foldersArgs<ExtArgs>
+  files?: boolean | Prisma.User$filesArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
 export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -831,6 +1091,9 @@ export type UserSelectScalar = {
 export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "password" | "role" | "profile_image" | "status" | "verified" | "package_id" | "onetime_code" | "expires_at" | "created_at" | "updated_at", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   package?: boolean | Prisma.User$packageArgs<ExtArgs>
+  folders?: boolean | Prisma.User$foldersArgs<ExtArgs>
+  files?: boolean | Prisma.User$filesArgs<ExtArgs>
+  _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   package?: boolean | Prisma.User$packageArgs<ExtArgs>
@@ -843,6 +1106,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "User"
   objects: {
     package: Prisma.$PackagePayload<ExtArgs> | null
+    folders: Prisma.$FolderPayload<ExtArgs>[]
+    files: Prisma.$FilePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1253,6 +1518,8 @@ readonly fields: UserFieldRefs;
 export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   package<T extends Prisma.User$packageArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$packageArgs<ExtArgs>>): Prisma.Prisma__PackageClient<runtime.Types.Result.GetResult<Prisma.$PackagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  folders<T extends Prisma.User$foldersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$foldersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FolderPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  files<T extends Prisma.User$filesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$filesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FilePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1707,6 +1974,54 @@ export type User$packageArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    */
   include?: Prisma.PackageInclude<ExtArgs> | null
   where?: Prisma.PackageWhereInput
+}
+
+/**
+ * User.folders
+ */
+export type User$foldersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Folder
+   */
+  select?: Prisma.FolderSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Folder
+   */
+  omit?: Prisma.FolderOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FolderInclude<ExtArgs> | null
+  where?: Prisma.FolderWhereInput
+  orderBy?: Prisma.FolderOrderByWithRelationInput | Prisma.FolderOrderByWithRelationInput[]
+  cursor?: Prisma.FolderWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FolderScalarFieldEnum | Prisma.FolderScalarFieldEnum[]
+}
+
+/**
+ * User.files
+ */
+export type User$filesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the File
+   */
+  select?: Prisma.FileSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the File
+   */
+  omit?: Prisma.FileOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FileInclude<ExtArgs> | null
+  where?: Prisma.FileWhereInput
+  orderBy?: Prisma.FileOrderByWithRelationInput | Prisma.FileOrderByWithRelationInput[]
+  cursor?: Prisma.FileWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FileScalarFieldEnum | Prisma.FileScalarFieldEnum[]
 }
 
 /**
