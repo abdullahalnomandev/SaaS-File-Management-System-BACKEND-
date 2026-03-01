@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id            Int         @id @unique @default(autoincrement())
+  email         String      @unique
+  name          String?
+  password      String
+  role          USER_ROLE   @default(user)
+  profile_image String?     @default("https://i.ibb.co/z5YHLV9/profile.png")
+  status        USER_STATUS @default(active)
+  verified      Boolean     @default(false)
+  package_id    Int?
+  onetime_code  String?
+  expires_at    DateTime?
+  package       Package?    @relation(fields: [package_id], references: [id])
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Package {
+  id                    Int      @id @default(autoincrement())
+  name                  String
+  total_max_folder      Int
+  max_nesting_folder    Int
+  allowed_file_type     String[]
+  max_file_size         Int
+  total_file_limit      Int
+  file_per_folder_limit Int
+  created_at            DateTime @default(now())
+  updated_at            DateTime @updatedAt
+  users                 User[]
+}
+
+enum USER_ROLE {
+  super_admin
+  admin
+  user
+}
+
+enum USER_STATUS {
+  active
+  block
+}
