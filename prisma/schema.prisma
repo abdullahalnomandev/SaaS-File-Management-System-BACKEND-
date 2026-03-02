@@ -57,9 +57,10 @@ model Folder {
 }
 
 model File {
-  id        Int    @id @default(autoincrement())
-  folder_id Int
-  folder    Folder @relation(fields: [folder_id], references: [id])
+  id        Int     @id @default(autoincrement())
+  folder_id Int?
+  folder    Folder? @relation(fields: [folder_id], references: [id])
+  name      String
   user_id   Int
   user      User   @relation(fields: [user_id], references: [id])
   path_name String

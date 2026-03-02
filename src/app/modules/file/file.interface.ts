@@ -10,3 +10,4 @@ export interface IFile {
   created_at?: Date;
   updated_at?: Date;
 }
+export type IFolderName = 'image' | 'media' | 'doc';

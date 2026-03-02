@@ -792,6 +792,7 @@ export type FolderScalarFieldEnum = (typeof FolderScalarFieldEnum)[keyof typeof 
 export const FileScalarFieldEnum = {
   id: 'id',
   folder_id: 'folder_id',
+  name: 'name',
   user_id: 'user_id',
   path_name: 'path_name',
   file_type: 'file_type',

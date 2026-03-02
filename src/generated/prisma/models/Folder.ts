@@ -425,11 +425,6 @@ export type FolderSumOrderByAggregateInput = {
   total_files?: Prisma.SortOrder
 }
 
-export type FolderScalarRelationFilter = {
-  is?: Prisma.FolderWhereInput
-  isNot?: Prisma.FolderWhereInput
-}
-
 export type FolderCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.FolderCreateWithoutUserInput, Prisma.FolderUncheckedCreateWithoutUserInput> | Prisma.FolderCreateWithoutUserInput[] | Prisma.FolderUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.FolderCreateOrConnectWithoutUserInput | Prisma.FolderCreateOrConnectWithoutUserInput[]
@@ -536,10 +531,12 @@ export type FolderCreateNestedOneWithoutFilesInput = {
   connect?: Prisma.FolderWhereUniqueInput
 }
 
-export type FolderUpdateOneRequiredWithoutFilesNestedInput = {
+export type FolderUpdateOneWithoutFilesNestedInput = {
   create?: Prisma.XOR<Prisma.FolderCreateWithoutFilesInput, Prisma.FolderUncheckedCreateWithoutFilesInput>
   connectOrCreate?: Prisma.FolderCreateOrConnectWithoutFilesInput
   upsert?: Prisma.FolderUpsertWithoutFilesInput
+  disconnect?: Prisma.FolderWhereInput | boolean
+  delete?: Prisma.FolderWhereInput | boolean
   connect?: Prisma.FolderWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.FolderUpdateToOneWithWhereWithoutFilesInput, Prisma.FolderUpdateWithoutFilesInput>, Prisma.FolderUncheckedUpdateWithoutFilesInput>
 }
