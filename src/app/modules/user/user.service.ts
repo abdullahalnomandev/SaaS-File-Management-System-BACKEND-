@@ -44,6 +44,7 @@ const createUserToDB = async (payload: Partial<IUser>) => {
       name,
       email,
       password: hashPassword,
+      package_id: 1,
     },
   });
 

@@ -22,6 +22,17 @@ router.delete(
   auth(USER_ROLES.ADMIN,USER_ROLES.SUPER_ADMIN,USER_ROLES.USER),
   FolderController.deleteFolder
 );
+router.patch(
+  '/:id',
+  auth(USER_ROLES.ADMIN,USER_ROLES.SUPER_ADMIN,USER_ROLES.USER),
+  FolderController.update
+);
+
+router.get(
+  '/breadcrumb/:id',
+  auth(USER_ROLES.ADMIN,USER_ROLES.SUPER_ADMIN,USER_ROLES.USER),
+  FolderController.getBreadcrumb
+)
 
 
 export const FolderRoutes = router;

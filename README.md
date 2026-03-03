@@ -1,114 +1,126 @@
-# Project Name
+# File Management System Backend
 
-This is a template project for backend development using Typescript, Node.js, Express, Mongoose, Bcrypt, JWT, NodeMailer, Multer, ESLint, and Prettier. The aim is to reduce setup time for new backend projects.
+A robust backend solution for managing files and folders, built with Node.js, Express, and Prisma. This project supports recursive folder structures, file uploads, role-based access control, and real-time updates via Socket.io.
 
 ## Features
 
-- **Authentication API:** Complete authentication system using JWT for secure token-based authentication and bcrypt for password hashing.
-- **File Upload:** Implemented using Multer with efficient file handling and short-term storage.
-- **Data Validation:** Robust data validation using Zod and Mongoose schemas.
-- **Code Quality:** Ensured code readability and quality with ESLint and Prettier.
-- **Email Service:** Sending emails through NodeMailer.
-- **File Handling:** Efficient file deletion using `fs.unlink`.
-- **Environment Configuration:** Easy configuration using a `.env` file.
-- **Logging:** Logging with Winston and file rotation using DailyRotateFile.
-- **API Request Logging:** Logging API requests using Morgan.
+- **Authentication & Authorization:** Secure JWT-based authentication with Bcrypt password hashing. Role-based access control for Super Admin, Admin, and User roles.
+- **File & Folder Management:** Support for recursive folder nesting, file storage, and organization with Prisma and PostgreSQL.
+- **File Uploads:** Integrated Multer middleware for categorized file uploads (images, profiles, media, docs) with validation.
+- **Database ORM:** Uses Prisma with PostgreSQL (compatible with Neon and Supabase) for efficient data modeling and querying.
+- **Real-time Communication:** Built-in support for Socket.io to handle real-time notifications or updates.
+- **Email Service:** Integration with Nodemailer for sending automated emails (OTP, account verification, etc.).
+- **Validation:** Strong data validation using Zod schemas for all API requests.
+- **Logging:** Comprehensive logging with Winston and API request tracking with Morgan.
+- **Auto-seeding:** Automatic Super Admin account creation on first database connection.
 
 ## Tech Stack
 
-- Typescript
-- Node.js
-- Express
-- Mongoose
-- Bcrypt
-- JWT
-- NodeMailer
-- Multer
-- ESLint
-- Prettier
-- Winston
-- Daily-winston-rotate-file
-- Morgen
-- Socket
+- **Runtime:** [Node.js](https://nodejs.org/)
+- **Framework:** [Express.js](https://expressjs.com/)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **ORM:** [Prisma](https://www.prisma.io/)
+- **Database:** PostgreSQL (Neon DB recommended)
+- **Validation:** [Zod](https://zod.dev/)
+- **Security:** JWT, Bcrypt
+- **File Handling:** Multer
+- **Real-time:** Socket.io
+- **Mailing:** Nodemailer
+- **Logging:** Winston, Morgan
 
 ## Getting Started
 
-Follow these steps to set up and run the project locally.
+Follow these steps to set up the project locally.
 
 ### Prerequisites
 
-Ensure you have the following installed:
-
-- Node.js
+- Node.js (v18+)
 - npm or yarn
+- A PostgreSQL database instance (e.g., [Neon](https://neon.tech/))
 
 ### Installation
 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/your-repository.git
-   cd your-repository
+   git clone https://github.com/your-username/file-management-backend.git
+   cd file-management-backend
    ```
 
 2. **Install dependencies:**
-
-   Using npm:
 
    ```bash
    npm install
    ```
 
-   Using yarn:
+3. **Set up Environment Variables:**
 
-   ```bash
-   yarn install
-   ```
-
-3. **Create a `.env` file:**
-
-   In the root directory of the project, create a `.env` file and add the following variables. Adjust the values according to your setup.
+   Create a `.env` file in the root directory and add the following:
 
    ```env
-   # Basic
+   # App Configuration
    NODE_ENV=development
-   DATABASE_URL=mongodb://127.0.0.1:27017/project_name
-   IP_ADDRESS=192.0.0.0
    PORT=5000
+   IP_ADDRESS=0.0.0.0
+
+   # Database (Prisma)
+   DATABASE_URL="postgresql://user:password@host:5432/dbname?sslmode=require"
 
    # Bcrypt
    BCRYPT_SALT_ROUNDS=12
 
    # JWT
-   JWT_SECRET=jwt_secret
-   JWT_EXPIRE_IN=1d
+   JWT_SECRET=your_super_secret_key
+   JWT_EXPIRE_IN=7d
 
-   # Email
-   EMAIL_FROM=email@gmail.com
-   EMAIL_USER=email@gmail.com
-   EMAIL_PASS=mkqcfjeqloothyax
-   EMAIL_PORT=587
+   # Email Service (SMTP)
    EMAIL_HOST=smtp.gmail.com
+   EMAIL_PORT=587
+   EMAIL_USER=your-email@gmail.com
+   EMAIL_PASS=your-app-password
+   EMAIL_FROM="App Name <your-email@gmail.com>"
+
+   # Super Admin Credentials
+   SUPER_ADMIN_EMAIL=admin@myapp.com
+   SUPER_ADMIN_PASSWORD=Admin@123
    ```
 
-4. **Run the project:**
+4. **Prisma Setup:**
 
-   Using npm:
+   Generate the Prisma Client and sync the database schema:
 
    ```bash
-   npm run dev
+   npx prisma generate
+   npx prisma db push
    ```
 
-   Using yarn:
+### Running the Application
 
-   ```bash
-   yarn run dev
-   ```
+- **Development Mode:**
 
-### Running the Tests
+  ```bash
+  npm run dev
+  ```
 
-Explain how to run the automated tests for this system.
+- **Prisma Studio:**
+  (To view and manage database data through a GUI)
 
-```bash
-npm test
-```
+  ```bash
+  npm run studio
+  ```
+
+- **Linting & Formatting:**
+
+  ```bash
+  npm run lint:check
+  npm run lint:fix
+  npm run prettier:fix
+  ```
+
+## API Documentation
+
+- (Add your API documentation link or details here)
+
+## License
+
+ISC

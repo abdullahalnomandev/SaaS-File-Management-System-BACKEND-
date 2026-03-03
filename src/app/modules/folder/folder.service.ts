@@ -32,10 +32,10 @@ const createFolderToDB = async (payload: IFolder): Promise<IFolder> => {
     : null;
 
   const nesting_level = await db.folder.count({
-    where:{
-      parent_folder_id
-    }
-  })
+    where: {
+      parent_folder_id,
+    },
+  });
 
   const packageInfo = parentFolder?.user?.package;
 
@@ -56,13 +56,24 @@ const createFolderToDB = async (payload: IFolder): Promise<IFolder> => {
     where: { user_id },
   });
 
+  const maxUserFolderPackageCount = await db.user.findUnique({
+    where: { id: user_id },
+    select: {
+      package: {
+        select: {
+          total_max_folder: true,
+        },
+      },
+    },
+  });
+
   if (
-    packageInfo?.total_max_folder !== undefined &&
-    folderCount >= packageInfo.total_max_folder
+    maxUserFolderPackageCount?.package?.total_max_folder !== undefined &&
+    folderCount >= maxUserFolderPackageCount?.package?.total_max_folder
   ) {
     throw new ApiError(
       StatusCodes.BAD_REQUEST,
-      `Oops! You can only create ${packageInfo.total_max_folder} folders.`
+      `Oops! You can only create ${maxUserFolderPackageCount?.package?.total_max_folder} folders.`
     );
   }
 
@@ -82,11 +93,19 @@ const createFolderToDB = async (payload: IFolder): Promise<IFolder> => {
 // Update folder by ID
 const updateFolderToDB = async (
   folderId: number,
+  userId: number,
   payload: Partial<IFolder>
 ): Promise<IFolder> => {
   const existing = await db.folder.findUnique({ where: { id: folderId } });
   if (!existing) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Folder not found');
+  }
+
+  if (existing.user_id !== userId) {
+    throw new ApiError(
+      StatusCodes.FORBIDDEN,
+      'You are not authorized to update this folder'
+    );
   }
 
   const updatedFolder = await db.folder.update({
@@ -102,24 +121,34 @@ const updateFolderToDB = async (
   return updatedFolder;
 };
 
-
 // Get all folders (optional: can filter by user_id)
-const getAllFoldersFromDB = async (userId?: number, parent_folder_id?: number) => {
+const getAllFoldersFromDB = async (
+  userId?: number,
+  parent_folder_id?: number
+) => {
   const folders = await db.folder.findMany({
-    where: userId ? { user_id: userId, parent_folder_id: parent_folder_id ?? undefined } : undefined,
-    orderBy: { id: 'asc' },
+    where: userId
+      ? { user_id: userId, parent_folder_id: parent_folder_id ?? undefined }
+      : undefined,
+    orderBy: { id: 'desc' },
   });
   return folders;
 };
 
-const deleteFolderFromDB = async ( folderId: number,userId: number): Promise<{ message: string }> => {
+const deleteFolderFromDB = async (
+  folderId: number,
+  userId: number
+): Promise<{ message: string }> => {
   const existing = await db.folder.findUnique({ where: { id: folderId } });
   if (!existing) {
     throw new ApiError(StatusCodes.NOT_FOUND, 'Folder not found');
   }
 
   if (existing.user_id !== userId) {
-    throw new ApiError(StatusCodes.FORBIDDEN, 'You are not authorized to delete this folder');
+    throw new ApiError(
+      StatusCodes.FORBIDDEN,
+      'You are not authorized to delete this folder'
+    );
   }
 
   await db.folder.delete({ where: { id: folderId } });
@@ -132,9 +161,40 @@ const deleteFolderFromDB = async ( folderId: number,userId: number): Promise<{ m
   return { message: 'Folder deleted successfully' };
 };
 
+// Get breadcrumb for a folder
+const getBreadcrumbFromDB = async (
+  folderId: number,
+  userId: number
+): Promise<IFolder[]> => {
+  const breadcrumbs: IFolder[] = [];
+
+  let currentFolder = await db.folder.findFirst({
+    where: {
+      id: folderId,
+      user_id: userId,
+    },
+  });
+
+  while (currentFolder) {
+    breadcrumbs.unshift(currentFolder); // add to beginning
+
+    if (!currentFolder.parent_folder_id) break;
+
+    currentFolder = await db.folder.findFirst({
+      where: {
+        id: currentFolder.parent_folder_id,
+        user_id: userId,
+      },
+    });
+  }
+
+  return breadcrumbs;
+};
+
 export const FolderService = {
   createFolderToDB,
   updateFolderToDB,
   getAllFoldersFromDB,
-  deleteFolderFromDB
+  deleteFolderFromDB,
+  getBreadcrumbFromDB,
 };
